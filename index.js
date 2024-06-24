@@ -1,17 +1,10 @@
 const express = require("express");
 const app = express();
-const fs = require("fs");
-const https = require("https");
+const http = require("http");
 const { Server } = require("socket.io");
 const ACTIONS = require("./Actions");
 
-// SSL Certificate
-const options = {
-  key: fs.readFileSync('/path/to/your/private-key.pem'),
-  cert: fs.readFileSync('/path/to/your/certificate.pem'),
-};
-
-const server = https.createServer(options, app);
+const server = http.createServer(app);
 
 const io = new Server(server);
 
@@ -47,7 +40,6 @@ io.on("connection", (socket) => {
   socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
     socket.in(roomId).emit(ACTIONS.CODE_CHANGE, { code });
   });
-
   // when new user join the room all the code which are there are also shows on that persons editor
   socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
     io.to(socketId).emit(ACTIONS.CODE_CHANGE, { code });
@@ -70,4 +62,4 @@ io.on("connection", (socket) => {
 });
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+server.listen(PORT, () => console.log(Server is runnint on port ${ PORT }));
